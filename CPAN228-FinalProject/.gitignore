@@ -31,3 +31,34 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+### OS-Specific ###
+.DS_Store           # macOS
+Thumbs.db           # Windows
+
+### Logs ###
+*.log
+logs/
+*.out
+
+### Environment and Credentials ###
+.env
+.env.local
+application-local.properties
+application-dev.properties
+
+### Maven ###
+**/dependency-reduced-pom.xml
+**/release.properties
+**/pom.xml.tag
+**/pom.xml.releaseBackup
+**/pom.xml.versionsBackup
+
+### Build Tools ###
+/out/
+.gradle/
+!gradle/wrapper/gradle-wrapper.jar
+
+### Test Output ###
+test-output/
