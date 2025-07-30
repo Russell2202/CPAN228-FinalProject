@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Game Over</title>
+</head>
+<body>
+<h1 th:text="${endingMessage}">Game Over</h1>
+<h3>Your Journey:</h3>
+<ul>
+    <li th:each="line : ${storyLog}" th:text="${line}"></li>
+</ul>
+
+<a th:href="@{/}">Play Again</a>
+<a th:href="@{/leaderboard}">Leaderboard</a>
+</body>
+</html>

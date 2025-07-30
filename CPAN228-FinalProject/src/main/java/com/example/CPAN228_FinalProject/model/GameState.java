@@ -42,4 +42,11 @@ public class GameState {
     public List<String> getStoryLog() {
         return storyLog;
     }
+
+    // If using StringBuilder:
+    public String getFullStory() {
+        return String.join("\n", storyLog);
+    }
+
 }
+

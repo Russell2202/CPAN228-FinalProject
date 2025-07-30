@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Adventure</title>
+</head>
+<body>
+<h1>Pandora's Dungeon</h1>
+
+<!-- Show the current story -->
+<div>
+    <h2>Story:</h2>
+    <pre th:text="${response}">[The story will appear here]</pre>
+</div>
+
+<!-- Buttons to start or continue -->
+<div th:if="${response}">
+    <!-- Option buttons only shown when there is a story -->
+    <h2>Choose Your Action:</h2>
+    <form action="/adventure/next" method="post">
+        <button type="submit" name="userChoice" value="1">Option 1</button>
+        <button type="submit" name="userChoice" value="2">Option 2</button>
+        <button type="submit" name="userChoice" value="3">Option 3</button>
+    </form>
+</div>
+
+<!-- Show Start button if no story yet -->
+<div th:unless="${response}">
+    <form action="/adventure/start" method="post">
+        <button type="submit">Start New Adventure</button>
+    </form>
+</div>
+
+</body>
+</html>
+

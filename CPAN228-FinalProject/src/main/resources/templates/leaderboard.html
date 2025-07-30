@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Leaderboard</title>
+</head>
+<body>
+<h2>Leaderboard</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Player</th>
+        <th>Result</th>
+        <th>Time</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="entry : ${leaderboard}">
+        <td th:text="${entry.playerName}"></td>
+        <td th:text="${entry.result}"></td>
+        <td th:text="${entry.timestamp}"></td>
+    </tr>
+    </tbody>
+</table>
+<a th:href="@{/}">Back to Start</a>
+</body>
+</html>
