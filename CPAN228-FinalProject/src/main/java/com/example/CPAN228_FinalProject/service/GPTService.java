@@ -4,12 +4,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
+import com.example.CPAN228_FinalProject.model.GameState;
 import java.util.*;
 
 @Service
 public class GPTService {
 
+    private final GameState gameState;
+
+    public GPTService(GameState gameState) {
+        this.gameState = gameState;
+    }
     @Value("${openai.api.key}")
     private String apiKey;
 
@@ -21,7 +26,13 @@ public class GPTService {
 
     public String generateResponse(List<String> history, String playerInput) {
         List<Map<String, String>> messages = new ArrayList<>();
-        messages.add(Map.of("role", "system", "content", "You are the narrator of a dark fantasy dungeon. The user is the player in a 'choose your own adventure' game."));
+
+        // Enhanced system prompt to enforce 3 options only
+        messages.add(Map.of("role", "system", "content",
+                "You are the narrator of a dark fantasy dungeon 'choose your own adventure' game. "
+                        + "The user must choose from 3 options only. "
+                        + "After every scene, clearly return exactly 3 options (1, 2, or 3) for what the player can do next. "
+                        + "NEVER return a different number of options, and NEVER include option 4 or beyond."));
 
         for (String message : history) {
             messages.add(Map.of("role", "user", "content", message));
@@ -50,12 +61,24 @@ public class GPTService {
         }
     }
 
+
     public String generateIntro() {
-        return generateResponse(new ArrayList<>(), "Begin the adventure.");
+        String introPrompt = "Begin a dark fantasy dungeon adventure. Introduce the setting and the player's role. " +
+                "At the end, present exactly 3 clearly numbered choices (1, 2, and 3). " +
+                "Do NOT include any other options or choices beyond 1 to 3.";
+
+        return generateResponse(new ArrayList<>(), introPrompt);
     }
 
-    public String continueStory(String prompt) {
-        return generateResponse(new ArrayList<>(), prompt);
+    public String continueStory(String playerInput) {
+        List<String> history = gameState.getStoryLog();
+        String structuredPrompt = playerInput + "\n\n"
+                + "Continue the story based on the player's choice above. "
+                + "End the response with exactly 3 clearly numbered options (1, 2, and 3). "
+                + "Do NOT include options 4 or any extra choices.";
+
+        return generateResponse(history, structuredPrompt);
     }
+
 }
 
