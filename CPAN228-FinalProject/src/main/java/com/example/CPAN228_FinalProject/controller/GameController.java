@@ -1,6 +1,7 @@
 package com.example.CPAN228_FinalProject.controller;
 
 import com.example.CPAN228_FinalProject.model.GameState;
+import com.example.CPAN228_FinalProject.model.User;
 import com.example.CPAN228_FinalProject.service.GPTService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,11 +36,16 @@ public class GameController {
 
 
     @RequestMapping(value = "/adventure/start", method = {RequestMethod.GET, RequestMethod.POST})
-    public String startGame(Model model) {
+    public String startGame(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");  // null-safe check
+        model.addAttribute("user", user);
+        model.addAttribute("session", session); // Enables #session.id in Thymeleaf
+
         gameState.reset();
         String intro = gptService.generateIntro();
         gameState.appendToStory("Game Start: " + intro);
         model.addAttribute("response", gameState.getFullStory());
+
         return "adventure";
     }
 

@@ -6,19 +6,44 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            margin-top: 30px;
+            font-size: 36px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .story-container {
+            margin: 20px auto;
+            max-width: 700px;
+            text-align: left;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: pre-wrap;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .flip-book {
             display: none;
+            font-size: 80px;
             margin: 20px auto;
-            font-size: 60px;
-            animation: flip 1s linear infinite;
+            animation: flipPage 1s linear infinite;
         }
 
-        @keyframes flip {
-            0% { transform: rotateY(0); }
-            50% { transform: rotateY(180deg); }
-            100% { transform: rotateY(360deg); }
+        @keyframes flipPage {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(180deg); }
         }
 
         .visible {
@@ -27,38 +52,50 @@
 
         button {
             margin: 10px;
-            padding: 10px 20px;
+            padding: 12px 24px;
             font-size: 18px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
         }
 
-        pre {
-            white-space: pre-wrap;
-            background-color: #f9f9f9;
-            padding: 15px;
-            border-radius: 5px;
-            max-width: 600px;
-            margin: auto;
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .button-group {
+            margin-bottom: 40px;
         }
     </style>
+
+
+
 </head>
 <body>
-<h1>Pandora's Dungeon</h1>
+<div class="container">
+    <h1>Pandora's Dungeon</h1>
 
-<!-- Story output -->
-<div id="story">
-    <h2>Story:</h2>
-    <pre th:text="${response}">[The story will appear here]</pre>
-</div>
+    <!-- Story output -->
+    <div class="story-container">
+        <h2>Story:</h2>
+        <p id="story-text" style="white-space: pre-wrap; word-wrap: break-word;" th:text="${response}">
+            [The story will appear here]
+        </p>
+    </div>
 
-<!-- Flip animation -->
-<div id="loader" class="flip-book">📖</div>
 
-<!-- Option buttons -->
-<h2>Choose Your Action:</h2>
-<div>
-    <button onclick="submitChoice(1)">Option 1</button>
-    <button onclick="submitChoice(2)">Option 2</button>
-    <button onclick="submitChoice(3)">Option 3</button>
+    <!-- Flip animation -->
+    <div id="loader" class="flip-book">📖</div>
+
+    <!-- Option buttons -->
+    <h2>Choose Your Action:</h2>
+    <div class="button-group">
+        <button onclick="submitChoice(1)">Option 1</button>
+        <button onclick="submitChoice(2)">Option 2</button>
+        <button onclick="submitChoice(3)">Option 3</button>
+    </div>
 </div>
 
 <script>
@@ -79,10 +116,6 @@
         })
         .catch(error => {
             alert("Something went wrong: " + error);
-        })
-        .finally(() => {
-            // Optional: hide loader just before reloading content
-            loader.classList.remove("visible");
         });
     }
 </script>
