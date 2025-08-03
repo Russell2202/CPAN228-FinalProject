@@ -1,13 +1,40 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
     <title>Pandora's Dungeon</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f8f8f8;
+            font-family: 'Georgia', serif;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        button {
+            font-size: 1.2em;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-<h1>Welcome to Pandora's Dungeon</h1>
-
-<form action="/adventure/start" method="post">
-    <button type="submit">Start New Adventure</button>
-</form>
+<div class="container">
+    <h1>Welcome to Pandora's Dungeon</h1>
+    <form action="/adventure/start" method="get">
+        <button type="submit">Start New Adventure</button>
+    </form>
+</div>
 </body>
 </html>
