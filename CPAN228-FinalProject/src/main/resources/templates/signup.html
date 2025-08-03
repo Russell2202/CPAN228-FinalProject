@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Sign Up</title>
+</head>
+<body>
+<h2>Sign Up</h2>
+
+<form th:action="@{/signup}" method="post">
+    <input type="text" name="username" placeholder="Username" required/><br/>
+    <input type="password" name="password" placeholder="Password" required/><br/>
+    <button type="submit">Sign Up</button>
+</form>
+
+<!-- Add this button to return to login -->
+<form action="/login" method="get">
+    <button type="submit">Return to Login</button>
+</form>
+
+
+<p th:if="${error}" th:text="${error}" style="color:red"></p>
+<p th:if="${success}" th:text="${success}" style="color:green"></p>
+
+</body>
+</html>

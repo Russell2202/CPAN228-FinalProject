@@ -2,6 +2,7 @@ package com.example.CPAN228_FinalProject.controller;
 
 import com.example.CPAN228_FinalProject.model.GameState;
 import com.example.CPAN228_FinalProject.service.GPTService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,9 +25,14 @@ public class GameController {
 
     // Show the homepage
     @GetMapping("/")
-    public String showHomePage() {
+    public String home(HttpSession session) {
+        if (session.getAttribute("user") == null) {
+            return "redirect:/login";
+        }
         return "index";
     }
+
+
 
     @RequestMapping(value = "/adventure/start", method = {RequestMethod.GET, RequestMethod.POST})
     public String startGame(Model model) {
