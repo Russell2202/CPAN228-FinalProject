@@ -12,6 +12,9 @@ public class GameState {
 
     private final List<String> storyLog = new ArrayList<>();
     private boolean gameOver = false;
+    private String dungeonTitle;
+    private String storySummary;
+
 
     public void appendToStory(String entry) {
         storyLog.add(entry);
@@ -46,6 +49,22 @@ public class GameState {
     // If using StringBuilder:
     public String getFullStory() {
         return String.join("\n", storyLog);
+    }
+
+    public String getDungeonTitle() {
+        return dungeonTitle;
+    }
+
+    public void setDungeonTitle(String dungeonTitle) {
+        this.dungeonTitle = dungeonTitle;
+    }
+
+    public String getStorySummary() {
+        return storySummary;
+    }
+
+    public void setStorySummary(String storySummary) {
+        this.storySummary = storySummary;
     }
 
 }

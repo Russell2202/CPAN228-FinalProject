@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -68,10 +69,20 @@
         .button-group {
             margin-bottom: 40px;
         }
+
+        .session-box {
+            position: fixed;
+            top: 10px;
+            right: 20px;
+            width: 250px;
+            padding: 15px;
+            border-radius: 10px;
+            background-color: #f2f2f2;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            font-size: 14px;
+            text-align: left;
+        }
     </style>
-
-
-
 </head>
 <body>
 <div class="container">
@@ -80,11 +91,10 @@
     <!-- Story output -->
     <div class="story-container">
         <h2>Story:</h2>
-        <p id="story-text" style="white-space: pre-wrap; word-wrap: break-word;" th:text="${response}">
+        <p id="story-text" th:text="${response}">
             [The story will appear here]
         </p>
     </div>
-
 
     <!-- Flip animation -->
     <div id="loader" class="flip-book">📖</div>
@@ -95,6 +105,15 @@
         <button onclick="submitChoice(1)">Option 1</button>
         <button onclick="submitChoice(2)">Option 2</button>
         <button onclick="submitChoice(3)">Option 3</button>
+    </div>
+
+    <!-- Session Manager Panel -->
+    <div class="session-box">
+        <h4>Session Info</h4>
+        <p><strong>Username:</strong> <span th:text="${user.username}">Unknown</span></p>
+        <p><strong>Dungeon:</strong> <span th:text="${session.dungeonTitle}">The Forgotten Spire</span></p>
+        <p><strong>Summary:</strong></p>
+        <p th:text="${session.dungeonSummary}">An ancient tower of cursed knowledge...</p>
     </div>
 </div>
 

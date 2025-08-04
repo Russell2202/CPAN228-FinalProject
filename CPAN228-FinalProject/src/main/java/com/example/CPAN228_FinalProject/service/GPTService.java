@@ -80,5 +80,29 @@ public class GPTService {
         return generateResponse(history, structuredPrompt);
     }
 
+    public String generateDungeonTitle(String intro) {
+        String prompt = """
+        Based on the following dark fantasy dungeon summary, return a fitting dungeon name (maximum 5 words).
+        Do not include quotation marks or additional descriptions.
+        Only return the dungeon name.
+
+        Summary:
+        """ + intro;
+
+        return generateResponse(new ArrayList<>(), prompt).trim();
+    }
+
+
+
+    public String generateDungeonSummaryFromIntro(String intro) {
+        String prompt = "Based on the following dark fantasy dungeon introduction, write a 2-4 sentence summary of the dungeon setting. "
+                + "This summary should **not** include any numbered choices or options. Only describe the atmosphere and background.\n\n"
+                + intro;
+        String raw = generateResponse(new ArrayList<>(), prompt);
+        return raw.replaceAll("(?m)^\\d+\\.\\s.*", "");  // Just in case GPT adds options again
+    }
+
+
+
 }
 

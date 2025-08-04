@@ -32,22 +32,32 @@ public class GameController {
         }
         return "index";
     }
-
-
-
     @RequestMapping(value = "/adventure/start", method = {RequestMethod.GET, RequestMethod.POST})
     public String startGame(Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");  // null-safe check
+        User user = (User) session.getAttribute("user");
         model.addAttribute("user", user);
-        model.addAttribute("session", session); // Enables #session.id in Thymeleaf
+        model.addAttribute("session", session);
 
+        // 1. Generate Intro
         gameState.reset();
         String intro = gptService.generateIntro();
         gameState.appendToStory("Game Start: " + intro);
-        model.addAttribute("response", gameState.getFullStory());
+        model.addAttribute("response", "Game Start: " + intro);
+
+        // 2. Generate Related Title & Summary
+        String dungeonTitle = gptService.generateDungeonTitle(intro);
+        String dungeonSummary = gptService.generateDungeonSummaryFromIntro(intro);
+
+        session.setAttribute("dungeonTitle", dungeonTitle);
+        session.setAttribute("dungeonSummary", dungeonSummary);
 
         return "adventure";
     }
+
+
+
+
+
 
     // Show the adventure page manually (if needed)
     @GetMapping("/adventure")
@@ -57,7 +67,7 @@ public class GameController {
     }
 
     @PostMapping("/adventure/next")
-    public String continueGame(@RequestParam String userChoice, Model model) {
+    public String continueGame(@RequestParam String userChoice, Model model, HttpSession session) {
         List<String> validChoices = Arrays.asList("1", "2", "3");
 
         if (!validChoices.contains(userChoice)) {
@@ -66,11 +76,19 @@ public class GameController {
         }
 
         String response = gptService.continueStory(userChoice);
-        gameState.appendToStory("> " + userChoice + "\n" + response);
-        model.addAttribute("response", response);
+        gameState.appendToStory("> " + userChoice + "\n" + response);  // Still track full log if needed
+        model.addAttribute("response", response);  // Only show latest part
+
+
+        model.addAttribute("user", session.getAttribute("user"));
+        model.addAttribute("session", session);
 
         return "adventure";
     }
+
+
+
+
     @GetMapping("/leaderboard")
     public String showLeaderboard() {
         return "leaderboard";
