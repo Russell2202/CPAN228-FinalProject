@@ -1,0 +1,1 @@
+INSERT IGNORE INTO users (username, password) VALUES ('admin', 'admin');
