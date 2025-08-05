@@ -27,12 +27,15 @@ public class GPTService {
     public String generateResponse(List<String> history, String playerInput) {
         List<Map<String, String>> messages = new ArrayList<>();
 
-        // Enhanced system prompt to enforce 3 options only
+        // Enhanced system prompt to enforce 3 options only and have endings
         messages.add(Map.of("role", "system", "content",
-                "You are the narrator of a dark fantasy dungeon 'choose your own adventure' game. "
-                        + "The user must choose from 3 options only. "
-                        + "After every scene, clearly return exactly 3 options (1, 2, or 3) for what the player can do next. "
-                        + "NEVER return a different number of options, and NEVER include option 4 or beyond."));
+                "You are the narrator of a dark fantasy dungeon 'choose your own adventure' game. " +
+                        "The user must choose from 3 options only. " +
+                        "At certain points in the story, one of the options may lead to the end of the adventure. " +
+                        "To mark this, prefix that option with [Ending]. " +
+                        "This helps the system detect the game over path. " +
+                        "NEVER include more than 3 choices."));
+
 
         for (String message : history) {
             messages.add(Map.of("role", "user", "content", message));

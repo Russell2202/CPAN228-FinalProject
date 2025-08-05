@@ -122,6 +122,16 @@
         const loader = document.getElementById("loader");
         loader.classList.add("visible");
 
+        // Check if the button label contains [Ending]
+        const buttons = document.querySelectorAll(".button-group button");
+        const choiceText = buttons[option - 1].innerText;
+
+        if (choiceText.startsWith("[Ending]")) {
+            // Redirect to homepage or end screen
+            window.location.href = "/";
+            return;
+        }
+
         fetch("/adventure/next", {
             method: "POST",
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -137,6 +147,7 @@
             alert("Something went wrong: " + error);
         });
     }
+
 </script>
 </body>
 </html>

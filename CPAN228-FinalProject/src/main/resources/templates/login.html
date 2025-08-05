@@ -3,13 +3,15 @@
 <head>
     <title>Login</title>
     <style>
-        body {
+        /* Scope everything under .login-page */
+        body.login-page {
             font-family: Arial, sans-serif;
             background-color: #f3f3f3;
+            margin: 0;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
         }
 
         .login-container {
@@ -21,42 +23,58 @@
             width: 350px;
         }
 
-        h1 {
+        .login-container h1 {
             font-size: 28px;
             margin-bottom: 20px;
         }
 
-        input[type="text"],
-        input[type="password"] {
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            all: unset;
             width: 90%;
             padding: 12px;
             margin: 10px 0;
             font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
 
-        button {
+        .login-container button {
+            all: unset;
             width: 100%;
             padding: 12px;
             background-color: #333;
             color: white;
-            border: none;
             font-size: 18px;
+            border-radius: 5px;
+            margin-top: 10px;
             cursor: pointer;
-            margin-top: 10px;
         }
 
-        .error {
-            color: red;
-            margin-top: 10px;
+        .login-container button:hover {
+            background-color: #555;
         }
 
-        .switch-link {
+        .login-container .switch-link {
             margin-top: 15px;
             display: block;
+            font-size: 14px;
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        .login-container .switch-link:hover {
+            text-decoration: underline;
+        }
+
+        .login-container .error {
+            color: red;
+            margin-top: 10px;
+            font-size: 14px;
         }
     </style>
 </head>
-<body>
+<body class="login-page">
 <div class="login-container">
     <h1>Login</h1>
     <form method="post" action="/login">
@@ -70,4 +88,3 @@
 </div>
 </body>
 </html>
-
