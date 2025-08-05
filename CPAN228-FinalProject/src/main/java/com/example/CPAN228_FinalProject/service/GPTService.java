@@ -32,7 +32,10 @@ public class GPTService {
                 "You are the narrator of a dark fantasy dungeon 'choose your own adventure' game. " +
                         "The user must choose from 3 options only. " +
                         "At certain points in the story, one of the options may lead to the end of the adventure. " +
-                        "To mark this, prefix that option with [Ending]. " +
+                        "Include at least one end point every three prompts. " +
+                        "If the player chooses option 3 in the first prompt and then again chooses option 3 in the second prompt, the game should end" +
+                        "When the game ends, begin your response with ##GAME_OVER## and DO NOT include any further option " +
+                        "In this situation have the option have the player perish or leave the dungeon" +
                         "This helps the system detect the game over path. " +
                         "NEVER include more than 3 choices."));
 

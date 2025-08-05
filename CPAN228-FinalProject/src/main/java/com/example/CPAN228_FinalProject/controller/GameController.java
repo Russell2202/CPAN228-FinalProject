@@ -76,10 +76,16 @@ public class GameController {
         }
 
         String response = gptService.continueStory(userChoice);
-        gameState.appendToStory("> " + userChoice + "\n" + response);  // Still track full log if needed
-        model.addAttribute("response", response);  // Only show latest part
+
+        //Check if the response contains Ending marker
+        if (response.trim().toLowerCase().startsWith("##game_over##")) {
+            return "redirect:/";
+        }
 
 
+        // Continue if not ending
+        gameState.appendToStory("> " + userChoice + "\n" + response);
+        model.addAttribute("response", response);
         model.addAttribute("user", session.getAttribute("user"));
         model.addAttribute("session", session);
 
