@@ -32,6 +32,8 @@ public class GameController {
         }
         return "index";
     }
+
+    //Starts the game
     @RequestMapping(value = "/adventure/start", method = {RequestMethod.GET, RequestMethod.POST})
     public String startGame(Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
@@ -53,11 +55,6 @@ public class GameController {
 
         return "adventure";
     }
-
-
-
-
-
 
     // Show the adventure page manually (if needed)
     @GetMapping("/adventure")
@@ -82,7 +79,6 @@ public class GameController {
             return "redirect:/";
         }
 
-
         // Continue if not ending
         gameState.appendToStory("> " + userChoice + "\n" + response);
         model.addAttribute("response", response);
@@ -91,9 +87,6 @@ public class GameController {
 
         return "adventure";
     }
-
-
-
 
     @GetMapping("/leaderboard")
     public String showLeaderboard() {
