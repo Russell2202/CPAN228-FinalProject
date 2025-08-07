@@ -2,15 +2,24 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Game Over</title>
+    <link rel="stylesheet" th:href="@{/css/end.css}">
 </head>
 <body>
-<h1 th:text="${endingMessage}">Game Over</h1>
-<h3>Your Journey:</h3>
-<ul>
-    <li th:each="line : ${storyLog}" th:text="${line}"></li>
-</ul>
+    <div class="container">
+        <div class="section">
+            <h1>Game Over</h1>
+            <h2>You have been bested by the dungeon!</h2>
+            <h3>Thanks for playing</h3>
+        </div>
 
-<a th:href="@{/}">Play Again</a>
-<a th:href="@{/leaderboard}">Leaderboard</a>
+        <!-- Will lead to beginning for now-->
+        <!-- TODO: Create story log page-->
+        <a th:href="@{/}"><button class="button" type="button">Story Log</button></a>
+
+        <div class="buttonSpace">
+            <a th:href="@{/}"><button class="button" type="button">Play Again</button></a>
+            <a class="button" th:href="@{/leaderboard}"><button class="button" type="button">Leaderboard</button></a>
+        </div>
+    </div>
 </body>
 </html>
