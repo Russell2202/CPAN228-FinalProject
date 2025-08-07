@@ -18,7 +18,6 @@ public class GameController {
     private final GPTService gptService;
     private final GameState gameState;
 
-    @Autowired
     public GameController(GPTService gptService, GameState gameState) {
         this.gptService = gptService;
         this.gameState = gameState;
