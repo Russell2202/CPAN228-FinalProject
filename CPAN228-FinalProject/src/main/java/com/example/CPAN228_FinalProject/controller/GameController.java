@@ -79,7 +79,7 @@ public class GameController {
 
         //Check if the response contains Ending marker
         if (response.trim().toLowerCase().startsWith("##game_over##")) {
-            return "redirect:/";
+            return "redirect:/end";
         }
 
 
@@ -101,7 +101,8 @@ public class GameController {
     }
 
     @GetMapping("/end")
-    public String showEndPage() {
+    public String showEndPage(Model model) {
+        model.addAttribute("storylog", gameState.getFullStory());
         return "end";
     }
 }
