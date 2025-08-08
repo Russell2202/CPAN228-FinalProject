@@ -15,7 +15,6 @@ public class GameState {
     private String dungeonTitle;
     private String storySummary;
 
-
     public void appendToStory(String entry) {
         storyLog.add(entry);
     }
@@ -68,4 +67,3 @@ public class GameState {
     }
 
 }
-
