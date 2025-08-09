@@ -2,25 +2,52 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Leaderboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f3f3;
+            text-align: center;
+        }
+        table {
+            margin: auto;
+            border-collapse: collapse;
+            width: 50%;
+            background-color: white;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+        }
+        th {
+            background-color: #333;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        a {
+            display: block;
+            margin-top: 20px;
+            color: #333;
+        }
+    </style>
 </head>
 <body>
-<h2>Leaderboard</h2>
+<h1>Leaderboard</h1>
 <table>
-    <thead>
     <tr>
-        <th>Player</th>
-        <th>Result</th>
-        <th>Time</th>
+        <th>Rank</th>
+        <th>Username</th>
+        <th>Score</th>
     </tr>
-    </thead>
-    <tbody>
-    <tr th:each="entry : ${leaderboard}">
-        <td th:text="${entry.playerName}"></td>
-        <td th:text="${entry.result}"></td>
-        <td th:text="${entry.timestamp}"></td>
+    <tr th:each="entry, iterStat : ${leaderboard}">
+        <td th:text="${iterStat.count}"></td>
+        <td th:text="${entry.username}"></td>
+        <td th:text="${entry.score}"></td>
     </tr>
-    </tbody>
 </table>
-<a th:href="@{/}">Back to Start</a>
+<a href="/">Back to Home</a>
 </body>
 </html>
+
+

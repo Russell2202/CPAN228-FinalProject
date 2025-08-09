@@ -14,6 +14,8 @@ public class GameState {
     private boolean gameOver = false;
     private String dungeonTitle;
     private String storySummary;
+    private int score = 0;
+
 
 
     public void appendToStory(String entry) {
@@ -32,7 +34,13 @@ public class GameState {
     public void reset() {
         storyLog.clear();
         gameOver = false;
+        score = 0;
+
     }
+    public void incrementScore(int points) { this.score += points; }
+
+    public int getScore() { return score; }
+
 
     public boolean isGameOver() {
         return gameOver;
@@ -68,4 +76,3 @@ public class GameState {
     }
 
 }
-

@@ -8,6 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import com.example.CPAN228_FinalProject.model.LeaderboardEntry;
+import com.example.CPAN228_FinalProject.repository.LeaderboardRepository;
+import com.example.CPAN228_FinalProject.model.User;
+
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,11 +21,12 @@ public class GameController {
 
     private final GPTService gptService;
     private final GameState gameState;
+    private final LeaderboardRepository leaderboardRepository;
 
-    @Autowired
-    public GameController(GPTService gptService, GameState gameState) {
+    public GameController(GPTService gptService, GameState gameState, LeaderboardRepository leaderboardRepository) {
         this.gptService = gptService;
         this.gameState = gameState;
+        this.leaderboardRepository = leaderboardRepository;
     }
 
     // Show the homepage
@@ -32,6 +37,8 @@ public class GameController {
         }
         return "index";
     }
+
+    //Starts the game
     @RequestMapping(value = "/adventure/start", method = {RequestMethod.GET, RequestMethod.POST})
     public String startGame(Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
@@ -54,11 +61,6 @@ public class GameController {
         return "adventure";
     }
 
-
-
-
-
-
     // Show the adventure page manually (if needed)
     @GetMapping("/adventure")
     public String showAdventurePage(Model model) {
@@ -77,28 +79,43 @@ public class GameController {
 
         String response = gptService.continueStory(userChoice);
 
-        //Check if the response contains Ending marker
-        if (response.trim().toLowerCase().startsWith("##game_over##")) {
-            return "redirect:/";
-        }
-
-
-        // Continue if not ending
+        // keep your existing flow
         gameState.appendToStory("> " + userChoice + "\n" + response);
         model.addAttribute("response", response);
         model.addAttribute("user", session.getAttribute("user"));
         model.addAttribute("session", session);
 
+        // Detect ending (supports both markers you're using)
+        String respLower = response == null ? "" : response.toLowerCase();
+        boolean isEnding = respLower.startsWith("[ending]") || respLower.contains("##game_over##");
+
+        if (isEnding) {
+            // Use current logged-in user or fallback
+            User user = (User) session.getAttribute("user");
+            String username = (user != null && user.getUsername() != null) ? user.getUsername() : "anonymous";
+
+            // Use score if your GameState has it, else default to 0
+            int score = 0;
+            try {
+
+                score = gameState.getScore();
+            } catch (NoSuchMethodError | Exception ignored) {
+                // leave score as 0
+            }
+
+            leaderboardRepository.save(new LeaderboardEntry(username, score));
+            return "redirect:/leaderboard";
+        }
+
         return "adventure";
     }
 
-
-
-
     @GetMapping("/leaderboard")
-    public String showLeaderboard() {
+    public String showLeaderboard(Model model) {
+        model.addAttribute("leaderboard", leaderboardRepository.findTop10ByOrderByScoreDesc());
         return "leaderboard";
     }
+
 
     @GetMapping("/end")
     public String showEndPage() {
