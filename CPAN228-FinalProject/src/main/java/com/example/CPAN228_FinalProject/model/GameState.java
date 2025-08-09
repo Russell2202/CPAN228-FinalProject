@@ -37,7 +37,7 @@ public class GameState {
         score = 0;
 
     }
-    public void incrementScore(int points) { this.score += points; }
+    public void addScore(int delta) { this.score += Math.max(0, delta); }
 
     public int getScore() { return score; }
 

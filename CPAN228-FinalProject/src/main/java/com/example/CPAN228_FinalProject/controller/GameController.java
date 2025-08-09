@@ -15,6 +15,9 @@ import com.example.CPAN228_FinalProject.model.User;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
 
 @Controller
 public class GameController {
@@ -79,6 +82,34 @@ public class GameController {
 
         String response = gptService.continueStory(userChoice);
 
+        // NEW: extract hidden per-turn score <!--SCORE:N--> and add to total (N must be 0..100)
+        try {
+            int earned = 0;
+            if (response != null) {
+                Matcher m = Pattern.compile("<!--\\s*SCORE\\s*:\\s*(\\d{1,3})\\s*-->").matcher(response);
+                if (m.find()) {
+                    int n = Integer.parseInt(m.group(1));
+                    if (n >= 0 && n <= 100) {
+                        earned = n; // per-turn cap 0..100
+                    }
+                }
+            }
+            // Try to add to your cumulative score if GameState supports it
+            try {
+                gameState.getClass().getMethod("addScore", int.class).invoke(gameState, earned);
+            } catch (NoSuchMethodException e) {
+                // Fallback: if you only have setScore/getScore, use that instead
+                try {
+                    int current = gameState.getScore();
+                    int updated = current + earned; // totals can exceed 100 (e.g., 1000+)
+                    gameState.getClass().getMethod("setScore", int.class).invoke(gameState, updated);
+                } catch (Exception ignore) { /* no-op if not available */ }
+            }
+        } catch (Exception ignore) {
+            // stay silent—don’t break flow if score parse fails
+        }
+        // END NEW
+
         // keep your existing flow
         gameState.appendToStory("> " + userChoice + "\n" + response);
         model.addAttribute("response", response);
@@ -97,7 +128,6 @@ public class GameController {
             // Use score if your GameState has it, else default to 0
             int score = 0;
             try {
-
                 score = gameState.getScore();
             } catch (NoSuchMethodError | Exception ignored) {
                 // leave score as 0
@@ -109,6 +139,8 @@ public class GameController {
 
         return "adventure";
     }
+
+
 
     @GetMapping("/leaderboard")
     public String showLeaderboard(Model model) {
