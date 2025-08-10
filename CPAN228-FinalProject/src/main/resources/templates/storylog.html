@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Game Over</title>
+    <link rel="stylesheet" th:href="@{/css/storylog.css}">
+</head>
+<body>
+    <div class="container">
+        <h1>Story Log</h1>
+        <div class="section" th:each=" entry : ${storylog}">
+            <div th:text="${entry}"></div>
+        </div>
+
+        <a th:href="@{/end}"><button class="button" type="button">Go back</button></a>
+
+    </div>
+</body>
+</html>

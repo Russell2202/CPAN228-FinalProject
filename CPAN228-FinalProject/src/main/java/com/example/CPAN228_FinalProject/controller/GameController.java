@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 public class GameController {
@@ -94,7 +97,13 @@ public class GameController {
 
     @GetMapping("/end")
     public String showEndPage(Model model) {
-        model.addAttribute("storylog", gameState.getFullStory());
         return "end";
     }
+
+    @GetMapping("/story")
+    public String getMethodName(Model model) {
+        model.addAttribute("storylog", gameState.getStoryLog());
+        return "storylog";
+    }
+    
 }
