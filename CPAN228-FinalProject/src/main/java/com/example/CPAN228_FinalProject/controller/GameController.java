@@ -135,7 +135,7 @@ public class GameController {
             }
 
             leaderboardRepository.save(new LeaderboardEntry(username, score));
-            return "redirect:/leaderboard";
+            return "redirect:/end";
         }
 
         return "adventure";
