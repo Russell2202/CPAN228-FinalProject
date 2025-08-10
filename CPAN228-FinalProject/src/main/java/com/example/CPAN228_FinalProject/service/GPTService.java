@@ -67,6 +67,7 @@ public class GPTService {
         }
     }
 
+
     public String generateIntro() {
         String introPrompt = "Begin a dark fantasy dungeon adventure. Introduce the setting and the player's role. " +
                 "At the end, present exactly 3 clearly numbered choices (1, 2, and 3). " +
@@ -78,12 +79,14 @@ public class GPTService {
     public String continueStory(String playerInput) {
         List<String> history = gameState.getStoryLog();
         String structuredPrompt = playerInput + "\n\n"
-                + "Continue the story based on the player's choice above. "
-                + "End the response with exactly 3 clearly numbered options (1, 2, and 3). "
-                + "Do NOT include options 4 or any extra choices.";
-
+                + "Continue the story based on the player's choice above.\n"
+                + "Rules:\n"
+                + "- Always end with exactly 3 numbered options (1, 2, 3), unless the story ends.\n"
+                + "- Assign a risk-based score (0–100) for THIS user choice and append <!--SCORE:N--> at the very end (N is an integer).\n"
+                + "- If this is a game-ending scene, begin the response with ##GAME_OVER## and DO NOT include options. Still append <!--SCORE:N--> at the end.";
         return generateResponse(history, structuredPrompt);
     }
+
 
     public String generateDungeonTitle(String intro) {
         String prompt = """
@@ -97,6 +100,8 @@ public class GPTService {
         return generateResponse(new ArrayList<>(), prompt).trim();
     }
 
+
+
     public String generateDungeonSummaryFromIntro(String intro) {
         String prompt = "Based on the following dark fantasy dungeon introduction, write a 2-4 sentence summary of the dungeon setting. "
                 + "This summary should **not** include any numbered choices or options. Only describe the atmosphere and background.\n\n"
@@ -105,4 +110,22 @@ public class GPTService {
         return raw.replaceAll("(?m)^\\d+\\.\\s.*", "");  // Just in case GPT adds options again
     }
 
+    public int extractScore(String response) {
+        if (response == null) return 0;
+        var m = java.util.regex.Pattern.compile("<!--\\s*SCORE\\s*:\\s*(\\d{1,3})\\s*-->").matcher(response);
+        if (m.find()) {
+            try {
+                int n = Integer.parseInt(m.group(1));
+                if (n < 0) n = 0;
+                if (n > 100) n = 100;
+                return n;
+            } catch (NumberFormatException ignored) {}
+        }
+        return 0;
+    }
+
+
+
+
 }
+
