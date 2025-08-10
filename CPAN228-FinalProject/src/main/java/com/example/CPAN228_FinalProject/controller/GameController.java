@@ -111,6 +111,7 @@ public class GameController {
         // END NEW
 
         // keep your existing flow
+        // Continue if not ending
         gameState.appendToStory("> " + userChoice + "\n" + response);
         model.addAttribute("response", response);
         model.addAttribute("user", session.getAttribute("user"));
@@ -134,7 +135,7 @@ public class GameController {
             }
 
             leaderboardRepository.save(new LeaderboardEntry(username, score));
-            return "redirect:/leaderboard";
+            return "redirect:/end";
         }
 
         return "adventure";
@@ -150,7 +151,14 @@ public class GameController {
 
 
     @GetMapping("/end")
-    public String showEndPage() {
+    public String showEndPage(Model model) {
+        model.addAttribute("score", gameState.getScore());
         return "end";
+    }
+
+    @GetMapping("/story")
+    public String getMethodName(Model model) {
+        model.addAttribute("storylog", gameState.getStoryLog());
+        return "storylog";
     }
 }
