@@ -152,6 +152,7 @@ public class GameController {
 
     @GetMapping("/end")
     public String showEndPage(Model model) {
+        model.addAttribute("score", gameState.getScore());
         return "end";
     }
 

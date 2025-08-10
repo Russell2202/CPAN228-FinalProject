@@ -12,6 +12,13 @@
             <h3>Thanks for playing</h3>
         </div>
 
+        <div class="section">
+            <h1>Your Score</h1>
+            <p class="score" th:text="${score}"></p>
+        </div>
+
+        <div class="line"></div>
+
         <a th:href="@{/story}"><button class="button" type="button">Story Log</button></a>
 
         <div class="buttonSpace">
